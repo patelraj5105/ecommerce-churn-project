@@ -9,12 +9,18 @@ const Prediction = require('./models/Prediction');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["https://ecommerce-churn-project.vercel.app", "http://localhost:5173"],
+  methods: ["GET", "POST"],
+  credentials: true
+}));
 
 // Connect to your local MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/churnDB')
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.error('❌ MongoDB Connection Error:', err));
+const DB_URI = 'mongodb+srv://patelraj5105_db_user:Rajpatel5105@cluster0.xdeio95.mongodb.net/churnDB?retryWrites=true&w=majority&appName=Cluster0';
+
+mongoose.connect(DB_URI)
+    .then(() => console.log('✅ Connected to MongoDB Atlas Cloud'))
+    .catch(err => console.error('❌ MongoDB Cloud Error:', err.message));
 
 // The main route that talks to your Python AI
 app.post('/api/predict', async (req, res) => {
